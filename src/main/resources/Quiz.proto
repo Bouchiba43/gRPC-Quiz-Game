@@ -2,67 +2,60 @@ syntax = "proto3";
 
 package CorbaQuiz;
 
-// Represents a quiz question
 message Quiz {
-  int32 id = 1; // Unique identifier for the question
-  string question = 2; // The question text
-  string answer_1 = 3; // The first answer option
-  string answer_2 = 4; // The second answer option
-  string answer_3 = 5; // The third answer option
-  string answer_4 = 6; // The fourth answer option
-  int32 correct_answer = 7; // Index (1-4) of the correct answer
+  int32 id = 1;
+  string question = 2;
+  string answer_1 = 3;
+  string answer_2 = 4;
+  string answer_3 = 5;
+  string answer_4 = 6;
+  int32 correct_answer = 7;
 }
 
-// Represents a player in the quiz game
 message Player {
-  string playerName = 1; // Player's name
-  int32 score = 2; // Player's score
+  string playerName = 1;
+  int32 score = 2;
 }
 
-// Service interface for the Quiz game operations
 service QuizGame {
-  // Get all the available quizzes
   rpc GetQuiz(Empty) returns (QuizSequence) {}
 
-  // Get a specific quiz question by its ID
   rpc GetQuestion(QuestionRequest) returns (Quiz) {}
 
-  // Register a player for the quiz game
   rpc RegisterPlayer(PlayerRegistration) returns (Empty) {}
 
-  // Make a player's move (submit an answer for a quiz)
   rpc Play(PlayerMove) returns (Empty) {}
 
-  // Get the list of player scores
   rpc GetPlayerScores(Empty) returns (PlayerSequence) {}
+
+  rpc getPlayerScore(Player) returns (PlayerScore);
 }
 
-// A message to represent empty responses
+message PlayerScore {
+  string playerName = 1;
+  int32 score = 2;
+}
+
 message Empty {}
 
-// Request message to get a specific quiz question by ID
 message QuestionRequest {
-  int32 id = 1; // ID of the quiz question
+  int32 id = 1;
 }
 
-// Request message to register a player
 message PlayerRegistration {
-  string playerName = 1; // Player's name for registration
+  string playerName = 1;
 }
 
-// Represents a player's move (answer submission)
 message PlayerMove {
-  string playerName = 1; // Player's name
-  int32 quizId = 2; // Quiz ID to answer
-  int32 selectedAnswer = 3; // The selected answer (1-4)
+  string playerName = 1;
+  int32 quizId = 2;
+  int32 selectedAnswer = 3;
 }
 
-// A sequence of quizzes (repeated)
 message QuizSequence {
-  repeated Quiz quizzes = 1; // List of quizzes
+  repeated Quiz quizzes = 1;
 }
 
-// A sequence of players (repeated)
 message PlayerSequence {
-  repeated Player players = 1; // List of players
+  repeated Player players = 1;
 }
